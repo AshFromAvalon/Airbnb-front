@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const PwdInput = ({ placeholder }) => {
+const PwdInput = ({ placeholder, value, setPwd, setConfirmPwd }) => {
   const { input } = styles;
   return (
     <>
@@ -10,6 +10,8 @@ const PwdInput = ({ placeholder }) => {
         placeholder={placeholder}
         secureTextEntry={true}
         style={input}
+        value={value}
+        onChangeText={(text) => (setPwd ? setPwd(text) : setConfirmPwd(text))}
       />
     </>
   );

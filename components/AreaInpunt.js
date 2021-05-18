@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const AreaInput = ({ placeholder }) => {
+const AreaInput = ({ placeholder, value, setDescription }) => {
   const { input } = styles;
   return (
     <>
@@ -11,6 +11,8 @@ const AreaInput = ({ placeholder }) => {
         multiline={true}
         numberOfLines={4}
         style={input}
+        value={value}
+        onChangeText={(text) => setDescription(text)}
       />
     </>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
@@ -28,12 +28,11 @@ const SignUpScreen = ({ setToken }) => {
         "https://express-airbnb-api.herokuapp.com/user/sign_up",
         {
           email: email,
-          username: username,
-          description: description,
           password: pwd,
         }
       );
-      console.log(res.data);
+      res.data && setToken(res.data.token);
+      console.log("Signed in");
     } catch (error) {
       console.log(error.message);
     }
@@ -64,14 +63,7 @@ const SignUpScreen = ({ setToken }) => {
           setConfirmPwd={setConfirmPwd}
         />
         <View style={center}>
-          <TouchableOpacity
-            style={button}
-            onPress={postForm}
-            // onPress={async () => {
-            //   const userToken = "secret-token";
-            //   setToken(userToken);
-            // }}
-          >
+          <TouchableOpacity style={button} onPress={postForm}>
             <Text style={btnText}>Sign up</Text>
           </TouchableOpacity>
           <Link screen="SingIn" title="Already have an account? Sign in" />

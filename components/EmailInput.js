@@ -2,11 +2,16 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const EmailInput = ({ placeholder }) => {
+const EmailInput = ({ placeholder, value, setEmail }) => {
   const { input } = styles;
   return (
     <>
-      <TextInput placeholder={placeholder} style={input} />
+      <TextInput
+        placeholder={placeholder}
+        style={input}
+        value={value}
+        onChangeText={(text) => setEmail(text)}
+      />
     </>
   );
 };
