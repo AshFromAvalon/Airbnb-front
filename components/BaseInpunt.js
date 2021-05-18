@@ -2,12 +2,17 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const BaseInpunt = ({ placeholder }) => {
+const BaseInpunt = ({ placeholder, value, setUsername }) => {
   const { input } = styles;
 
   return (
     <>
-      <TextInput placeholder={placeholder} style={input} />
+      <TextInput
+        placeholder={placeholder}
+        style={input}
+        value={value}
+        onChangeText={(text) => setUsername(text)}
+      />
     </>
   );
 };
