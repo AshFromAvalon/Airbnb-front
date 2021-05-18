@@ -52,6 +52,7 @@ const SignUpScreen = ({ setToken }) => {
     }
 
     setIsLoading(true);
+
     try {
       const res = await axios.post(
         "https://express-airbnb-api.herokuapp.com/user/sign_up",
