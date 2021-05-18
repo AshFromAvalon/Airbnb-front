@@ -1,7 +1,17 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { useState } from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useState, useEffect } from "react";
+import {
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
 
@@ -15,11 +25,24 @@ import colors from "../assets/colors";
 
 export default function SignInScreen({ setToken }) {
   const navigation = useNavigation();
-  const { button, btnText, center, form, logoBig, screenTitle } = styles;
+  const {
+    activityContainer,
+    alertText,
+    button,
+    btnText,
+    center,
+    form,
+    formContainer,
+    logoBig,
+    screenTitle,
+  } = styles;
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const postForm = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.post(
         "https://express-airbnb-api.herokuapp.com/user/log_in",
@@ -28,33 +51,71 @@ export default function SignInScreen({ setToken }) {
           password: pwd,
         }
       );
-      res.data && setToken(res.data.token);
-      console.log("Signed in");
+      if (res.data.token) {
+        setToken(res.data.token);
+        console.log("Signed in");
+        setIsLoading(false);
+      }
     } catch (error) {
+      setIsLoading(false);
+      setError("invalid email or password");
       console.log(error.message);
     }
   };
 
   return (
-    <KeyboardAwareScrollView>
-      <View style={center}>
-        <Image source={require("../assets/airbnb-logo.png")} style={logoBig} />
-        <Text style={screenTitle}>Sign in</Text>
-      </View>
-      <View style={form}>
-        <EmailInput placeholder="email" value={email} setEmail={setEmail} />
-        <PwdInput placeholder="password" value={pwd} setPwd={setPwd} />
-        <View style={center}>
-          <TouchableOpacity style={button} onPress={postForm}>
-            <Text style={btnText}>Sign in</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </KeyboardAwareScrollView>
+    <SafeAreaView style={formContainer}>
+      <StatusBar style="dark" />
+      <KeyboardAwareScrollView>
+        {!isLoading ? (
+          <>
+            <View style={center}>
+              <Image
+                source={require("../assets/airbnb-logo.png")}
+                style={logoBig}
+              />
+              <Text style={screenTitle}>Sign in</Text>
+            </View>
+            <View style={form}>
+              <EmailInput
+                placeholder="email"
+                value={email}
+                setEmail={setEmail}
+              />
+              <PwdInput placeholder="password" value={pwd} setPwd={setPwd} />
+              <View style={center}>
+                {error ? <Text style={alertText}>{error}</Text> : null}
+                <TouchableOpacity style={button} onPress={postForm}>
+                  <Text style={btnText}>Sign in</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={activityContainer}>
+              <ActivityIndicator size="large" color={colors.accent} />
+            </View>
+          </>
+        )}
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
-
+const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
+  alertText: {
+    color: colors.primary,
+    paddingBottom: 10,
+  },
+
+  activityContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: windowHeight - 100,
+  },
+
   center: {
     alignItems: "center",
   },
@@ -77,6 +138,10 @@ const styles = StyleSheet.create({
   form: {
     paddingHorizontal: 35,
     paddingVertical: 20,
+  },
+
+  formContainer: {
+    marginTop: 40,
   },
 
   logoBig: {

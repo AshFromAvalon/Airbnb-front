@@ -10,6 +10,7 @@ const EmailInput = ({ placeholder, value, setEmail }) => {
         placeholder={placeholder}
         style={input}
         value={value}
+        keyboardType="email-address"
         onChangeText={(text) => setEmail(text)}
       />
     </>

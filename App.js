@@ -47,9 +47,25 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="SignIn">
+          {() => <SignInScreen setToken={setToken} />}
+        </Stack.Screen>
+        <Stack.Screen name="SignUp">
+          {() => <SignUpScreen setToken={setToken} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+      {/* {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <Stack.Screen name="SignIn">
             {() => <SignInScreen setToken={setToken} />}
           </Stack.Screen>
@@ -129,7 +145,7 @@ export default function App() {
             )}
           </Stack.Screen>
         </Stack.Navigator>
-      )}
+      )} */}
     </NavigationContainer>
   );
 }

@@ -1,18 +1,30 @@
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { useState } from "react";
+import { View, TextInput, StyleSheet } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import colors from "../assets/colors";
 
 const PwdInput = ({ placeholder, value, setPwd, setConfirmPwd }) => {
   const { input } = styles;
+  const [secure, setSecure] = useState(true);
+
   return (
     <>
-      <TextInput
-        placeholder={placeholder}
-        secureTextEntry={true}
-        style={input}
-        value={value}
-        onChangeText={(text) => (setPwd ? setPwd(text) : setConfirmPwd(text))}
-      />
+      <View style={input}>
+        <TextInput
+          placeholder={placeholder}
+          secureTextEntry={secure}
+          value={value}
+          style={{ flex: 1 }}
+          onChangeText={(text) => (setPwd ? setPwd(text) : setConfirmPwd(text))}
+        />
+        <FontAwesome
+          name={secure ? "eye-slash" : "eye"}
+          size={22}
+          color={secure ? colors.primary : "black"}
+          onPress={() => setSecure(!secure)}
+        />
+      </View>
     </>
   );
 };
@@ -23,6 +35,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 30,
     paddingBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

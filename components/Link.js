@@ -9,7 +9,7 @@ const Link = ({ screen, title }) => {
   const { linkText, link } = styles;
 
   return (
-    <TouchableOpacity onPress={() => navigation.navidate(screen)} style={link}>
+    <TouchableOpacity onPress={() => navigation.navigate(screen)} style={link}>
       <Text style={linkText}>{title}</Text>
     </TouchableOpacity>
   );
