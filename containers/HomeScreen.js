@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/core";
 import {
   StyleSheet,
   FlatList,
+  ActivityIndicator,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
@@ -44,10 +45,9 @@ const HomeScreen = () => {
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                key={index}
                 onPress={() => navigation.navigate("Flat", { id: item._id })}
               >
-                <FlatCard flat={item} description={false} />
+                <FlatCard key={index} flat={item} description={false} />
               </TouchableOpacity>
             );
           }}
@@ -56,7 +56,6 @@ const HomeScreen = () => {
       ) : (
         <LoadingActivity />
       )}
-      ;
     </SafeAreaView>
   );
 };

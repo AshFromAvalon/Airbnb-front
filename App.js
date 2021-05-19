@@ -50,7 +50,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {!isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
+      {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
         <Stack.Navigator
           screenOptions={{
