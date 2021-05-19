@@ -7,6 +7,7 @@ import {
   FlatList,
   ActivityIndicator,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
@@ -46,7 +47,11 @@ const HomeScreen = () => {
           style={listContainer}
           data={data}
           renderItem={({ item, index }) => {
-            return <FlatCard key={index} flat={item} />;
+            return (
+              <TouchableOpacity onPress={() => console.log("hello")}>
+                <FlatCard key={index} flat={item} />;
+              </TouchableOpacity>
+            );
           }}
           keyExtractor={(item) => item.id}
         />

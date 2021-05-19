@@ -1,5 +1,12 @@
 import React from "react";
-import { Text, View, StyleSheet, Image, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 import colors from "../assets/colors";
@@ -15,6 +22,7 @@ const FlatCard = ({ flat }) => {
       Number(item) <= Number(flat.ratingValue) ? "#FFB100" : colors.secondary;
     return (
       <FontAwesome
+        key={item}
         name="star"
         size={18}
         color={starColor}
@@ -37,7 +45,10 @@ const FlatCard = ({ flat }) => {
   } = styles;
 
   return (
-    <View style={cardContainer}>
+    <TouchableOpacity
+      style={cardContainer}
+      onPress={() => console.log("touchable")}
+    >
       <View>
         <Image source={{ uri: flat.photos[0].url }} style={flatCover} />
         <View style={flatPrice}>
@@ -69,7 +80,7 @@ const FlatCard = ({ flat }) => {
           source={{ uri: flat.user.account.photo.url }}
         ></Image>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
