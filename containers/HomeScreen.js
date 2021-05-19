@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import LottieView from "lottie-react-native";
 import {
   View,
   Text,
@@ -33,7 +32,6 @@ const HomeScreen = () => {
         );
         setData(res.data);
         setIsLoading(false);
-        animation.play();
       } catch (error) {
         console.log(error);
       }
@@ -43,11 +41,9 @@ const HomeScreen = () => {
 
   const { container, listContainer } = styles;
 
-  console.log(Platform);
-
   return (
     <SafeAreaView style={container}>
-      {isLoading ? (
+      {!isLoading ? (
         <FlatList
           showsVerticalScrollIndicator={false}
           style={listContainer}
@@ -64,23 +60,10 @@ const HomeScreen = () => {
           }}
           keyExtractor={(item) => item.id}
         />
-      ) : Platform.OS === "ios" ? (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <LottieView
-            style={{
-              height: 200,
-              width: 200,
-            }}
-            autoPlay={true}
-            loop={true}
-            source={require("../assets/lottieAnimation.json")}
-          />
-        </View>
       ) : (
         <LoadingActivity />
       )}
+      ;
     </SafeAreaView>
   );
 };
