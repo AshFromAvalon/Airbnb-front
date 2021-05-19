@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Screens
 import HomeScreen from "./containers/HomeScreen";
+import FlatScreen from "./containers/FlatScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
@@ -94,6 +95,15 @@ export default function App() {
                         }}
                       >
                         {() => <HomeScreen />}
+                      </Stack.Screen>
+
+                      <Stack.Screen
+                        name="Flat"
+                        options={{
+                          title: "Flat",
+                        }}
+                      >
+                        {() => <FlatScreen />}
                       </Stack.Screen>
 
                       <Stack.Screen

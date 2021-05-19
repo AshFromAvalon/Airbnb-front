@@ -48,8 +48,10 @@ const HomeScreen = () => {
           data={data}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity onPress={() => console.log("hello")}>
-                <FlatCard key={index} flat={item} />;
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Flat", { id: item._id })}
+              >
+                <FlatCard key={index} flat={item} description={false} />
               </TouchableOpacity>
             );
           }}
