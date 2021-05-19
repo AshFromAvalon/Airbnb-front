@@ -7,7 +7,6 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
@@ -16,8 +15,6 @@ import axios from "axios";
 
 import FlatCard from "../components/FlatCard";
 import LoadingActivity from "../components/LoadingActivity";
-import colors from "../assets/colors";
-import { color } from "react-native-reanimated";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -51,10 +48,9 @@ const HomeScreen = () => {
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
-                key={index}
                 onPress={() => navigation.navigate("Flat", { id: item._id })}
               >
-                <FlatCard flat={item} description={false} />
+                <FlatCard key={index} flat={item} description={false} />
               </TouchableOpacity>
             );
           }}
