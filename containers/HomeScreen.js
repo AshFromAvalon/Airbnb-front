@@ -18,7 +18,7 @@ import LoadingActivity from "../components/LoadingActivity";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -42,10 +42,11 @@ const HomeScreen = () => {
     <SafeAreaView style={container}>
       {!isLoading ? (
         <FlatList
+          showsVerticalScrollIndicator={false}
           style={listContainer}
           data={data}
           renderItem={({ item, index }) => {
-            <FlatCard key={index} flat={item} />;
+            return <FlatCard key={index} flat={item} />;
           }}
           keyExtractor={(item) => item.id}
         />
@@ -58,14 +59,11 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
     flex: 1,
+    paddingHorizontal: 15,
   },
 
-  listContainer: {
-    flex: 1,
-    backgroundColor: "lightblue",
-  },
+  listContainer: {},
 });
 
 export default HomeScreen;
