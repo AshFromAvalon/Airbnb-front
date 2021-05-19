@@ -1,23 +1,16 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
 import {
-  View,
-  Text,
   StyleSheet,
   FlatList,
   SafeAreaView,
   TouchableOpacity,
-  Platform,
 } from "react-native";
-import Constants from "expo-constants";
-import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 import FlatCard from "../components/FlatCard";
 import LoadingActivity from "../components/LoadingActivity";
-import colors from "../assets/colors";
-import { color } from "react-native-reanimated";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
