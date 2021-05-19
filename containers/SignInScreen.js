@@ -19,13 +19,13 @@ import axios from "axios";
 
 import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
+import LoadingActivity from "../components/LoadingActivity";
 
 import colors from "../assets/colors";
 
 export default function SignInScreen({ setToken }) {
   const navigation = useNavigation();
   const {
-    activityContainer,
     alertText,
     button,
     btnText,
@@ -51,14 +51,12 @@ export default function SignInScreen({ setToken }) {
         }
       );
       if (res.data.token) {
-        setToken(res.data.token);
-        console.log("Signed in");
         setIsLoading(false);
+        setToken(res.data.token);
       }
     } catch (error) {
       setIsLoading(false);
       setError("invalid email or password");
-      console.log(error.message);
     }
   };
 
@@ -95,11 +93,7 @@ export default function SignInScreen({ setToken }) {
             </View>
           </>
         ) : (
-          <>
-            <View style={activityContainer}>
-              <ActivityIndicator size="large" color={colors.accent} />
-            </View>
-          </>
+          <LoadingActivity />
         )}
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -108,15 +102,8 @@ export default function SignInScreen({ setToken }) {
 const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   alertText: {
-    color: colors.primary,
+    color: colors.accent,
     paddingBottom: 10,
-  },
-
-  activityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: windowHeight - 100,
   },
 
   center: {

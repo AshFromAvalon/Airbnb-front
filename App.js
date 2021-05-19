@@ -13,6 +13,8 @@ import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
 
+import colors from "./assets/colors";
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -47,18 +49,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="SignIn">
-          {() => <SignInScreen setToken={setToken} />}
-        </Stack.Screen>
-        <Stack.Screen name="SignUp">
-          {() => <SignUpScreen setToken={setToken} />}
-        </Stack.Screen>
-      </Stack.Navigator> */}
       {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
         <Stack.Navigator
@@ -80,8 +70,8 @@ export default function App() {
             {() => (
               <Tab.Navigator
                 tabBarOptions={{
-                  activeTintColor: "tomato",
-                  inactiveTintColor: "gray",
+                  activeTintColor: colors.accent,
+                  inactiveTintColor: colors.primary,
                 }}
               >
                 <Tab.Screen
@@ -99,8 +89,8 @@ export default function App() {
                         name="Home"
                         options={{
                           title: "My App",
-                          headerStyle: { backgroundColor: "red" },
-                          headerTitleStyle: { color: "white" },
+                          headerStyle: { backgroundColor: "white" },
+                          headerTitleStyle: { color: "black" },
                         }}
                       >
                         {() => <HomeScreen />}

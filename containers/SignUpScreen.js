@@ -21,6 +21,7 @@ import BaseInput from "../components/BaseInpunt";
 import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
 import Link from "../components/Link";
+import LoadingActivity from "../components/LoadingActivity";
 
 import colors from "../assets/colors";
 
@@ -33,9 +34,7 @@ const SignUpScreen = ({ setToken }) => {
     logoBig,
     screenTitle,
     formContainer,
-    activityContainer,
     alertText,
-    alertPwd,
   } = styles;
 
   const [username, setUsername] = useState("");
@@ -67,9 +66,8 @@ const SignUpScreen = ({ setToken }) => {
         );
         console.log(res.data);
         if (res.data.token) {
-          setToken(res.data.token);
-          console.log("Signed in");
           setIsLoading(false);
+          setToken(res.data.token);
         }
       } catch (error) {
         const message = error.response.data.error;
@@ -139,11 +137,7 @@ const SignUpScreen = ({ setToken }) => {
             </View>
           </>
         ) : (
-          <>
-            <View style={activityContainer}>
-              <ActivityIndicator size="large" color={colors.accent} />
-            </View>
-          </>
+          <LoadingActivity />
         )}
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -155,13 +149,6 @@ const styles = StyleSheet.create({
   alertText: {
     color: colors.accent,
     paddingBottom: 10,
-  },
-
-  activityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: windowHeight - 100,
   },
 
   center: {
