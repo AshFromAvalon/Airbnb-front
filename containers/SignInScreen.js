@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { StatusBar } from "expo-status-bar";
 import { useState, useEffect } from "react";
 import {
   Text,
@@ -11,8 +10,11 @@ import {
   ActivityIndicator,
   Dimensions,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { StatusBar } from "expo-status-bar";
+import Constants from "expo-constants";
 import axios from "axios";
 
 import AreaInput from "../components/AreaInpunt";
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-    marginTop: 40,
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
   },
 
   logoBig: {
