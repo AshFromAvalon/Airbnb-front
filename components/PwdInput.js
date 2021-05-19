@@ -4,7 +4,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import colors from "../assets/colors";
 
-const PwdInput = ({ placeholder, value, setPwd, setConfirmPwd }) => {
+const PwdInput = ({ placeholder, value, setValue }) => {
   const { input } = styles;
   const [secure, setSecure] = useState(true);
 
@@ -16,7 +16,7 @@ const PwdInput = ({ placeholder, value, setPwd, setConfirmPwd }) => {
           secureTextEntry={secure}
           value={value}
           style={{ flex: 1 }}
-          onChangeText={(text) => (setPwd ? setPwd(text) : setConfirmPwd(text))}
+          onChangeText={(text) => setValue(text)}
         />
         <FontAwesome
           name={secure ? "eye-slash" : "eye"}

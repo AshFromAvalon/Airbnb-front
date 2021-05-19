@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const BaseInpunt = ({ placeholder, value, setUsername }) => {
+const BaseInpunt = ({ placeholder, value, setValue }) => {
   const { input } = styles;
 
   return (
@@ -11,7 +11,7 @@ const BaseInpunt = ({ placeholder, value, setUsername }) => {
         placeholder={placeholder}
         style={input}
         value={value}
-        onChangeText={(text) => setUsername(text)}
+        onChangeText={(text) => setValue(text)}
       />
     </>
   );

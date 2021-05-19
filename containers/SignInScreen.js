@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Text,
   Image,
@@ -17,11 +17,8 @@ import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import axios from "axios";
 
-import AreaInput from "../components/AreaInpunt";
-import BaseInput from "../components/BaseInpunt";
 import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
-import Link from "../components/Link";
 
 import colors from "../assets/colors";
 
@@ -39,7 +36,7 @@ export default function SignInScreen({ setToken }) {
     screenTitle,
   } = styles;
   const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -49,8 +46,8 @@ export default function SignInScreen({ setToken }) {
       const res = await axios.post(
         "https://express-airbnb-api.herokuapp.com/user/log_in",
         {
-          email: email,
-          password: pwd,
+          email,
+          password,
         }
       );
       if (res.data.token) {
@@ -82,9 +79,13 @@ export default function SignInScreen({ setToken }) {
               <EmailInput
                 placeholder="email"
                 value={email}
-                setEmail={setEmail}
+                setValue={setEmail}
               />
-              <PwdInput placeholder="password" value={pwd} setPwd={setPwd} />
+              <PwdInput
+                placeholder="password"
+                value={password}
+                setValue={setPassword}
+              />
               <View style={center}>
                 {error ? <Text style={alertText}>{error}</Text> : null}
                 <TouchableOpacity style={button} onPress={postForm}>

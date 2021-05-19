@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const AreaInput = ({ placeholder, value, setDescription }) => {
+const AreaInput = ({ placeholder, value, setValue }) => {
   const { input } = styles;
   return (
     <>
@@ -12,7 +12,7 @@ const AreaInput = ({ placeholder, value, setDescription }) => {
         numberOfLines={4}
         style={input}
         value={value}
-        onChangeText={(text) => setDescription(text)}
+        onChangeText={(text) => setValue(text)}
       />
     </>
   );
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     padding: 10,
     height: 100,
+    textAlignVertical: "top",
   },
 });
 

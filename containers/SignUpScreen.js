@@ -11,6 +11,8 @@ import {
   Dimensions,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Constants from "expo-constants";
+import { StatusBar } from "expo-status-bar";
 import axios from "axios";
 
 // Compnents
@@ -38,44 +40,56 @@ const SignUpScreen = ({ setToken }) => {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [pwdError, setPwdError] = useState("");
 
   const postForm = async () => {
-    if (pwd != confirmPwd) {
-      setPwdError("Passwords are not matching");
+    if (password != confirmPwd) {
+      setError("Passwords are not matching");
       return;
     }
 
-    setIsLoading(true);
+    if (email && username && password && description) {
+      setIsLoading(true);
 
-    try {
-      const res = await axios.post(
-        "https://express-airbnb-api.herokuapp.com/user/sign_up",
-        {
-          email: email,
-          password: pwd,
+      try {
+        const res = await axios.post(
+          "https://express-airbnb-api.herokuapp.com/user/sign_up",
+          {
+            email,
+            username,
+            password,
+            description,
+          }
+        );
+        console.log(res.data);
+        if (res.data.token) {
+          setToken(res.data.token);
+          console.log("Signed in");
+          setIsLoading(false);
         }
-      );
-      console.log(res.data);
-      if (res.data.token) {
-        setToken(res.data.token);
-        console.log("Signed in");
+      } catch (error) {
+        const message = error.response.data.error;
+        if (message === "This email already has an account.") {
+          setError(message);
+        }
+        if (message === "This username already has an account.") {
+          setError(message);
+        }
         setIsLoading(false);
       }
-    } catch (error) {
+    } else {
+      setError("All fileds must filled");
       setIsLoading(false);
-      setError("Something went wrong");
-      console.log(error.message);
     }
   };
 
   return (
     <SafeAreaView style={formContainer}>
+      <StatusBar style="dark" />
       <KeyboardAwareScrollView>
         {!isLoading ? (
           <>
@@ -90,26 +104,29 @@ const SignUpScreen = ({ setToken }) => {
               <EmailInput
                 placeholder="email"
                 value={email}
-                setEmail={setEmail}
+                setValue={setEmail}
               />
               <BaseInput
                 placeholder="username"
                 value={username}
-                setUsername={setUsername}
+                setValue={setUsername}
               />
               <AreaInput
                 placeholder="Describe yourself in a few words..."
                 value={description}
-                setDescription={setDescription}
+                setValue={setDescription}
               />
-              <PwdInput placeholder="password" value={pwd} setPwd={setPwd} />
+              <PwdInput
+                placeholder="password"
+                value={password}
+                setValue={setPassword}
+              />
               <PwdInput
                 placeholder="confirm password"
                 value={confirmPwd}
-                setConfirmPwd={setConfirmPwd}
+                setValue={setConfirmPwd}
               />
               <View style={center}>
-                {pwdError ? <Text style={alertPwd}>{pwdError}</Text> : null}
                 {error ? <Text style={alertText}>{error}</Text> : null}
                 <TouchableOpacity style={button} onPress={postForm}>
                   <Text style={btnText}>Sign up</Text>
@@ -136,11 +153,6 @@ const SignUpScreen = ({ setToken }) => {
 const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   alertText: {
-    color: colors.primary,
-    paddingBottom: 10,
-  },
-
-  alertPwd: {
     color: colors.accent,
     paddingBottom: 10,
   },
@@ -177,7 +189,7 @@ const styles = StyleSheet.create({
   },
 
   formContainer: {
-    marginTop: 40,
+    marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
   },
 
   logoBig: {

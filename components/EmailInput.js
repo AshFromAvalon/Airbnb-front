@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 import colors from "../assets/colors";
 
-const EmailInput = ({ placeholder, value, setEmail }) => {
+const EmailInput = ({ placeholder, value, setValue }) => {
   const { input } = styles;
   return (
     <>
@@ -11,7 +11,8 @@ const EmailInput = ({ placeholder, value, setEmail }) => {
         style={input}
         value={value}
         keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setValue(text)}
+        autoCapitalize="none"
       />
     </>
   );
