@@ -59,6 +59,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+    flex: 1,
   },
 
   listContainer: {
