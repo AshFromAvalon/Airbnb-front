@@ -5,36 +5,35 @@ import {
   View,
   StyleSheet,
   Image,
-  FlatList,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { FontAwesome } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 import colors from "../assets/colors";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const FlatCard = ({ flat, description, slider }) => {
   const [showDescription, setShowDescription] = useState(false);
-  const navigation = useNavigation();
-  const stars = [1, 2, 3, 4, 5];
 
-  const renderStar = ({ item }) => {
-    if (item === null) return;
-    const starColor =
-      Number(item) <= Number(flat.ratingValue) ? "#FFB100" : colors.secondary;
-    return (
-      <FontAwesome
-        key={item}
-        name="star"
-        size={18}
-        color={starColor}
-        style={{ marginLeft: 5 }}
-      />
-    );
+  const renderStars = (numOfStars, ratingValue) => {
+    if (numOfStars === null || typeof numOfStars != "number") return;
+
+    const stars = [];
+
+    for (let i = 1; i <= numOfStars; i++) {
+      stars.push(
+        <FontAwesome
+          key={i}
+          name="star"
+          size={18}
+          color={i <= Number(ratingValue) ? "#FFB100" : colors.secondary}
+          style={{ marginLeft: 5 }}
+        />
+      );
+    }
+    return stars;
   };
 
   const renderTriangle = () => {
@@ -97,16 +96,8 @@ const FlatCard = ({ flat, description, slider }) => {
               {flat.title}
             </Text>
             <View style={statsContainer}>
-              <View>
-                <FlatList
-                  contentContainerStyle={{
-                    alignItems: "center",
-                  }}
-                  horizontal={true}
-                  data={stars}
-                  keyExtractor={(item) => item}
-                  renderItem={(item) => renderStar(item)}
-                />
+              <View style={{ flexDirection: "row" }}>
+                {renderStars(5, flat.ratingValue)}
               </View>
               <Text style={flatReview}>{flat.reviews} reviews</Text>
             </View>
@@ -138,9 +129,6 @@ const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    // marginBottom: 10,
-    // borderBottomWidth: 1,
-    // borderColor: "lightgrey",
   },
 
   flatCover: {
@@ -170,6 +158,7 @@ const styles = StyleSheet.create({
 
   flatInfo: {
     flex: 1,
+    paddingRight: 10,
   },
 
   flatOwnerPic: {
@@ -183,10 +172,9 @@ const styles = StyleSheet.create({
   },
 
   statsContainer: {
-    paddingTop: 10,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
   },
 
   flatReview: {
