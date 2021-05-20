@@ -34,7 +34,7 @@ const FlatScreen = () => {
   return (
     <SafeAreaView style={container}>
       {!isLoading ? (
-        <FlatCard flat={flat} description={true} />
+        <FlatCard flat={flat} description={true} slider={true} />
       ) : (
         <LoadingActivity />
       )}

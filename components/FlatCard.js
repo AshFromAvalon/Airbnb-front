@@ -7,15 +7,17 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { FontAwesome } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
+import { SwiperFlatList } from "react-native-swiper-flatlist";
 
 import colors from "../assets/colors";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
-const FlatCard = ({ flat, description }) => {
+const FlatCard = ({ flat, description, slider }) => {
   const [showDescription, setShowDescription] = useState(false);
   const navigation = useNavigation();
   const stars = [1, 2, 3, 4, 5];
@@ -63,7 +65,26 @@ const FlatCard = ({ flat, description }) => {
   return (
     <View style={cardContainer}>
       <View>
-        <Image source={{ uri: flat.photos[0].url }} style={flatCover} />
+        {slider ? (
+          <SwiperFlatList
+            index={2}
+            showPagination
+            paginationDefaultColor={colors.secondary}
+            index={0}
+            paginationStyleItem={{ height: 10, width: 10 }}
+            data={flat.photos}
+            renderItem={({ item }) => (
+              <Image
+                source={{ uri: item.url }}
+                style={flatCover}
+                key={item.picture_id}
+              />
+            )}
+          />
+        ) : (
+          <Image source={{ uri: flat.photos[0].url }} style={flatCover} />
+        )}
+
         <View style={flatPrice}>
           <Text style={priceText}>{flat.price} €</Text>
         </View>
@@ -96,22 +117,24 @@ const FlatCard = ({ flat, description }) => {
           ></Image>
         </View>
         {description ? (
-          <Text numberOfLines={showDescription ? null : 3}>
-            {flat.description}
-          </Text>
+          <View>
+            <Text numberOfLines={showDescription ? null : 3}>
+              {flat.description}
+            </Text>
+            <TouchableOpacity
+              style={showMoreBtn}
+              onPress={() => setShowDescription(!showDescription)}
+            >
+              <Text style={showMoreText}>Show more</Text>
+              {renderTriangle()}
+            </TouchableOpacity>
+          </View>
         ) : null}
-        <TouchableOpacity
-          style={showMoreBtn}
-          onPress={() => setShowDescription(!showDescription)}
-        >
-          <Text style={showMoreText}>Show more</Text>
-          {renderTriangle()}
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
-
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
@@ -122,7 +145,7 @@ const styles = StyleSheet.create({
 
   flatCover: {
     height: 200,
-    width: "100%",
+    width: width,
   },
 
   flatPrice: {

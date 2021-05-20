@@ -42,17 +42,17 @@ const HomeScreen = () => {
           showsVerticalScrollIndicator={false}
           style={listContainer}
           data={data}
+          keyExtractor={(item) => item._id}
           renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 key={index}
                 onPress={() => navigation.navigate("Flat", { id: item._id })}
               >
-                <FlatCard flat={item} description={false} />
+                <FlatCard flat={item} description={false} slider={false} />
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item) => item.id}
         />
       ) : (
         <LoadingActivity />
