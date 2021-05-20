@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, View } from "react-native";
+import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
 
 // Screens
 import HomeScreen from "./containers/HomeScreen";
@@ -14,8 +14,12 @@ import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import MapScreen from "./containers/MapScreen";
+
+// Components
 import Logo from "./components/Logo";
 
+// Assets
 import colors from "./assets/colors";
 
 const Tab = createBottomTabNavigator();
@@ -112,24 +116,24 @@ export default function App() {
                         {() => <FlatScreen />}
                       </Stack.Screen>
 
-                      <Stack.Screen
+                      {/* <Stack.Screen
                         name="Profile"
                         options={{
                           title: "User Profile",
                         }}
                       >
                         {() => <ProfileScreen />}
-                      </Stack.Screen>
+                      </Stack.Screen> */}
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen
-                  name="Settings"
+                  name="Map"
                   options={{
-                    tabBarLabel: "Settings",
+                    tabBarLabel: "Around me",
                     tabBarIcon: ({ color, size }) => (
-                      <Ionicons
-                        name={"ios-options"}
+                      <FontAwesome5
+                        name="map-marker-alt"
                         size={size}
                         color={color}
                       />
@@ -139,10 +143,38 @@ export default function App() {
                   {() => (
                     <Stack.Navigator>
                       <Stack.Screen
+                        name="Map"
+                        options={{ title: "Map", tabBarLabel: "Around me" }}
+                      >
+                        {() => <MapScreen setToken={setToken} />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen
+                  name="Profile"
+                  options={{
+                    tabBarLabel: "My profile",
+                    tabBarIcon: ({ color, size }) => (
+                      <FontAwesome name="user" size={size} color={color} />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      {/* <Stack.Screen
                         name="Settings"
                         options={{ title: "Settings", tabBarLabel: "Settings" }}
                       >
                         {() => <SettingsScreen setToken={setToken} />}
+                      </Stack.Screen> */}
+                      <Stack.Screen
+                        name="Profile"
+                        options={{
+                          title: "User Profile",
+                        }}
+                      >
+                        {() => <ProfileScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   small: {
-    height: 50,
-    width: 50,
+    height: 30,
+    width: 30,
   },
   medium: {
     height: 50,
