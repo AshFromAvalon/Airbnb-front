@@ -1,31 +1,32 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
-const Logo = ({ size }) => {
-  const { container, s, m, l } = styles;
+const Logo = ({ size, position }) => {
+  const {
+    containerCenter,
+    containerLeft,
+    containerRight,
+    small,
+    medium,
+    large,
+  } = styles;
 
   const logoStyle = (size) => {
-    if (size === "small")
-      return {
-        height: 30,
-        width: 30,
-      };
-    if (size === "medium")
-      return {
-        height: 50,
-        width: 50,
-      };
-    if (size === "large")
-      return {
-        height: 100,
-        width: 100,
-      };
+    if (!size) return medium;
+    if (size === "small") return small;
+    if (size === "medium") return medium;
+    if (size === "large") return large;
   };
 
-  console.log(size);
+  const containerStyle = (position) => {
+    if (!position) return containerCenter;
+    if (position === "center") return containerCenter;
+    if (position === "left") return containerLeft;
+    if (position === "right") return containerRight;
+  };
 
   return (
-    <View style={container}>
+    <View style={containerStyle(position)}>
       <Image
         source={require("../assets/airbnb-logo.png")}
         style={logoStyle(size)}
@@ -35,16 +36,27 @@ const Logo = ({ size }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerCenter: {
     flex: 1,
     alignItems: "center",
   },
-
-  m: {
+  containerLeft: {
+    flex: 1,
+    alignItems: "flex-start",
+  },
+  containerRight: {
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  small: {
     height: 50,
     width: 50,
   },
-  l: {
+  medium: {
+    height: 50,
+    width: 50,
+  },
+  large: {
     height: 100,
     width: 100,
   },
