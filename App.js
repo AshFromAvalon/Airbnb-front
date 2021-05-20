@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { Image, View } from "react-native";
 
 // Screens
 import HomeScreen from "./containers/HomeScreen";
@@ -13,6 +14,7 @@ import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import Logo from "./components/Logo";
 
 import colors from "./assets/colors";
 
@@ -85,11 +87,15 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerTitle: () => <Logo size={"small"} />,
+                      }}
+                    >
                       <Stack.Screen
                         name="Home"
                         options={{
-                          title: "My App",
+                          title: "",
                           headerStyle: { backgroundColor: "white" },
                           headerTitleStyle: { color: "black" },
                         }}
