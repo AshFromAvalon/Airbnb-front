@@ -1,14 +1,22 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  Platform,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
+import axios from "axios";
 
 import { Octicons } from "@expo/vector-icons";
+import colors from "../assets/colors";
 
 import LoadingActivity from "../components/LoadingActivity";
-import axios from "axios";
 
 const MapScreen = () => {
   const navigation = useNavigation();
@@ -46,14 +54,17 @@ const MapScreen = () => {
 
   return !isLoading ? (
     error ? (
-      <View style={container}>
+      <SafeAreaView style={container}>
         <Text>Permisson refusée</Text>
-      </View>
+      </SafeAreaView>
     ) : (
       <View style={container}>
         <MapView
           style={map}
           provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsMyLocationButton={true}
           initialRegion={{
             latitude: userCoords.latitude,
             longitude: userCoords.longitude,
@@ -92,15 +103,19 @@ const MapScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    width: Dimensions.get("window").width,
+    height:
+      Platform.OS === "android"
+        ? Dimensions.get("window").height - 100
+        : Dimensions.get("window").height - 170,
   },
 
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: "100%",
+    height: "100%",
   },
 
   markerContainer: {
