@@ -22,6 +22,7 @@ import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
 import Link from "../components/Link";
 import LoadingActivity from "../components/LoadingActivity";
+import Logo from "../components/Logo";
 
 import colors from "../assets/colors";
 
@@ -92,10 +93,7 @@ const SignUpScreen = ({ setToken }) => {
         {!isLoading ? (
           <>
             <View style={center}>
-              <Image
-                source={require("../assets/airbnb-logo.png")}
-                style={logoBig}
-              />
+              <Logo size={"large"} />
               <Text style={screenTitle}>Sign up</Text>
             </View>
             <View style={form}>

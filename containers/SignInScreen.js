@@ -20,6 +20,7 @@ import axios from "axios";
 import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
 import LoadingActivity from "../components/LoadingActivity";
+import Logo from "../components/Logo";
 
 import colors from "../assets/colors";
 
@@ -67,10 +68,7 @@ export default function SignInScreen({ setToken }) {
         {!isLoading ? (
           <>
             <View style={center}>
-              <Image
-                source={require("../assets/airbnb-logo.png")}
-                style={logoBig}
-              />
+              <Logo size={"large"} />
               <Text style={screenTitle}>Sign in</Text>
             </View>
             <View style={form}>
