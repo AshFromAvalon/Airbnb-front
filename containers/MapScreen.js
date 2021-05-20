@@ -2,9 +2,10 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import * as Location from "expo-location";
+
+import { Octicons } from "@expo/vector-icons";
 
 import LoadingActivity from "../components/LoadingActivity";
 import axios from "axios";
@@ -41,7 +42,7 @@ const MapScreen = () => {
     askPermission();
   }, []);
 
-  const { map, container } = styles;
+  const { map, container, marker, markerText, markerContainer } = styles;
 
   return !isLoading ? (
     error ? (
@@ -63,13 +64,22 @@ const MapScreen = () => {
           {flats.map((flat, index) => {
             return (
               <Marker
-                onPress={() => navigation.navigate("Flat", { id: flat._id })}
                 key={index}
+                onPress={() => navigation.navigate("Flat", { id: flat._id })}
                 coordinate={{
                   latitude: flat.location[1],
                   longitude: flat.location[0],
                 }}
-              />
+              >
+                <View style={markerContainer}>
+                  <View style={marker}>
+                    <Text style={markerText}>{flat.price} €</Text>
+                  </View>
+                  <View style={{ marginTop: -7 }}>
+                    <Octicons name="triangle-down" size={20} color="black" />
+                  </View>
+                </View>
+              </Marker>
             );
           })}
         </MapView>
@@ -87,9 +97,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+
+  markerContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  marker: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
+    width: 50,
+    backgroundColor: "black",
+  },
+
+  markerText: {
+    color: "white",
   },
 });
 
