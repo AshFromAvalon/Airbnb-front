@@ -150,7 +150,7 @@ export default function App() {
                         name="Map"
                         options={{ title: "Map", tabBarLabel: "Around me" }}
                       >
-                        {() => <MapScreen setToken={setToken} />}
+                        {() => <MapScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

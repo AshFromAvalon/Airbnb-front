@@ -1,13 +1,16 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { MapView, Marker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 import LoadingActivity from "../components/LoadingActivity";
 import axios from "axios";
 
 const MapScreen = () => {
+  const navigation = useNavigation();
   const [userCoords, setUserCoords] = useState();
   const [flats, setFlats] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -48,17 +51,19 @@ const MapScreen = () => {
     ) : (
       <View style={container}>
         <MapView
-          style={styles.map}
+          style={map}
+          provider={PROVIDER_GOOGLE}
           initialRegion={{
             latitude: userCoords.latitude,
             longitude: userCoords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.4,
+            longitudeDelta: 0.4,
           }}
         >
           {flats.map((flat, index) => {
             return (
               <Marker
+                onPress={() => navigation.navigate("Flat", { id: flat._id })}
                 key={index}
                 coordinate={{
                   latitude: flat.location[1],
