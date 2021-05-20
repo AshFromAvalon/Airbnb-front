@@ -138,9 +138,9 @@ const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderColor: "lightgrey",
+    // marginBottom: 10,
+    // borderBottomWidth: 1,
+    // borderColor: "lightgrey",
   },
 
   flatCover: {
@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
   flatPrice: {
     justifyContent: "center",
     alignItems: "center",
-    height: 30,
-    width: 60,
+    height: 40,
+    width: 80,
     backgroundColor: "black",
     position: "absolute",
-    bottom: 5,
+    bottom: 10,
   },
 
   priceText: {
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
   },
 
   statsContainer: {
+    paddingTop: 10,
     flexDirection: "row",
     alignItems: "center",
     flex: 1,

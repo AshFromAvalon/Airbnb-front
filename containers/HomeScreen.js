@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/core";
 import {
   StyleSheet,
   FlatList,
-  ActivityIndicator,
+  View,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
@@ -12,6 +12,7 @@ import axios from "axios";
 
 import FlatCard from "../components/FlatCard";
 import LoadingActivity from "../components/LoadingActivity";
+import colors from "../assets/colors";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -33,12 +34,15 @@ const HomeScreen = () => {
     fecthData();
   }, []);
 
-  const { container, listContainer } = styles;
+  const { container, listContainer, separator } = styles;
 
   return (
     <SafeAreaView style={container}>
       {!isLoading ? (
         <FlatList
+          ItemSeparatorComponent={() => {
+            return <View style={separator} />;
+          }}
           showsVerticalScrollIndicator={false}
           style={listContainer}
           data={data}
@@ -65,9 +69,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 15,
+    backgroundColor: "white",
   },
 
-  listContainer: {},
+  listContainer: {
+    backgroundColor: "white",
+  },
+
+  separator: {
+    height: 1,
+    marginBottom: 20,
+    width: "100%",
+    backgroundColor: colors.secondary,
+  },
 });
 
 export default HomeScreen;
