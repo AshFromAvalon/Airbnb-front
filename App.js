@@ -28,6 +28,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const setToken = async (token) => {
     if (token) {
@@ -39,20 +40,34 @@ export default function App() {
     setUserToken(token);
   };
 
+  const setId = async (id) => {
+    if (id) {
+      AsyncStorage.setItem("userId", id);
+    } else {
+      AsyncStorage.removeItem("userId");
+    }
+
+    setUserId(id);
+  };
+
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       // We should also handle error for production apps
       const userToken = await AsyncStorage.getItem("userToken");
+      const userId = await AsyncStorage.getItem("userId");
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       setIsLoading(false);
       setUserToken(userToken);
+      setUserId(userId);
     };
 
     bootstrapAsync();
   }, []);
+
+  !isLoading && console.log("id:", userId, "token:", userToken);
 
   return (
     <NavigationContainer>
@@ -64,10 +79,10 @@ export default function App() {
           }}
         >
           <Stack.Screen name="SignIn">
-            {() => <SignInScreen setToken={setToken} />}
+            {() => <SignInScreen setToken={setToken} setId={setId} />}
           </Stack.Screen>
           <Stack.Screen name="SignUp">
-            {() => <SignUpScreen setToken={setToken} />}
+            {() => <SignUpScreen setToken={setToken} setId={setId} />}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -178,11 +193,11 @@ export default function App() {
                           title: "User Profile",
                         }}
                       >
-                        {(props) => (
+                        {() => (
                           <ProfileScreen
-                            {...props}
-                            userId={"60a3dc7fcef2a200172a3fca"}
+                            userId={userId}
                             userToken={userToken}
+                            setToken={setToken}
                           />
                         )}
                       </Stack.Screen>

@@ -22,11 +22,12 @@ import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
 import Link from "../components/Link";
 import LoadingActivity from "../components/LoadingActivity";
+import TouchButton from "../components/TouchButton";
 import Logo from "../components/Logo";
 
 import colors from "../assets/colors";
 
-const SignUpScreen = ({ setToken }) => {
+const SignUpScreen = ({ setToken, setId }) => {
   const {
     button,
     btnText,
@@ -69,6 +70,7 @@ const SignUpScreen = ({ setToken }) => {
         if (res.data.token) {
           setIsLoading(false);
           setToken(res.data.token);
+          setId(res.data.id);
         }
       } catch (error) {
         const message = error.response.data.error;
@@ -124,9 +126,7 @@ const SignUpScreen = ({ setToken }) => {
               />
               <View style={center}>
                 {error ? <Text style={alertText}>{error}</Text> : null}
-                <TouchableOpacity style={button} onPress={postForm}>
-                  <Text style={btnText}>Sign up</Text>
-                </TouchableOpacity>
+                <TouchButton title={"Sign up"} onPress={postForm} />
                 <Link
                   screen="SignIn"
                   title="Already have an account? Sign in"

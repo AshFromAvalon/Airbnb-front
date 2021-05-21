@@ -20,11 +20,12 @@ import axios from "axios";
 import EmailInput from "../components/EmailInput";
 import PwdInput from "../components/PwdInput";
 import LoadingActivity from "../components/LoadingActivity";
+import TouchButton from "../components/TouchButton";
 import Logo from "../components/Logo";
 
 import colors from "../assets/colors";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setId }) {
   const navigation = useNavigation();
   const {
     alertText,
@@ -54,6 +55,7 @@ export default function SignInScreen({ setToken }) {
       if (res.data.token) {
         setIsLoading(false);
         setToken(res.data.token);
+        setId(res.data.id);
       }
     } catch (error) {
       setIsLoading(false);
@@ -84,9 +86,7 @@ export default function SignInScreen({ setToken }) {
               />
               <View style={center}>
                 {error ? <Text style={alertText}>{error}</Text> : null}
-                <TouchableOpacity style={button} onPress={postForm}>
-                  <Text style={btnText}>Sign in</Text>
-                </TouchableOpacity>
+                <TouchButton title={"Sign in"} onPress={postForm} />
               </View>
             </View>
           </>
