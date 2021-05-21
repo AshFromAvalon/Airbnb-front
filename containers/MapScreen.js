@@ -28,32 +28,40 @@ const MapScreen = () => {
 
   useEffect(() => {
     const askPermission = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === "granted") {
-        const userLocation = await Location.getCurrentPositionAsync({});
-        setUserCoords({
-          latitude: userLocation.coords.latitude,
-          longitude: userLocation.coords.longitude,
-        });
-        try {
-          const res = await axios.get(
-            `https://express-airbnb-api.herokuapp.com/rooms/around?latitue=${userLocation.coords.latitude}&longitude=${userLocation.coords.longitude}`
-          );
-          setFlats(res.data);
-        } catch (error) {
-          console.log(error);
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+
+        let res;
+
+        if (status === "granted") {
+          const userLocation = await Location.getCurrentPositionAsync({});
+          setUserCoords({
+            latitude: userLocation.coords.latitude,
+            longitude: userLocation.coords.longitude,
+          });
+          try {
+            res = await axios.get(
+              `https://express-airbnb-api.herokuapp.com/rooms/around?latitue=${userLocation.coords.latitude}&longitude=${userLocation.coords.longitude}`
+            );
+          } catch (error) {
+            console.log(error);
+          }
         }
-      } else {
-        try {
-          const res = await axios.get(
-            "https://express-airbnb-api.herokuapp.com/rooms/around"
-          );
-          setFlats(res.data);
-        } catch (error) {
-          console.log(error);
+
+        if (status === "denied") {
+          try {
+            res = await axios.get(
+              "https://express-airbnb-api.herokuapp.com/rooms/around"
+            );
+          } catch (error) {
+            console.log(error);
+          }
         }
+        setFlats(res.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
       }
-      setIsLoading(false);
     };
     askPermission();
   }, []);

@@ -178,7 +178,13 @@ export default function App() {
                           title: "User Profile",
                         }}
                       >
-                        {() => <ProfileScreen />}
+                        {(props) => (
+                          <ProfileScreen
+                            {...props}
+                            userId={"60a3dc7fcef2a200172a3fca"}
+                            userToken={userToken}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
