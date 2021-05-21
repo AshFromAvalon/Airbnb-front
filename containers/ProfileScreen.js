@@ -96,7 +96,6 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
         },
       }
     );
-    console.log(uploadResult.data.photo[0].url);
 
     const updateInfoResult = await axios.put(
       "https://express-airbnb-api.herokuapp.com/user/update",
@@ -111,21 +110,15 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
         },
       }
     );
-    console.log(updateInfoResult.data);
   });
 
   // Render profile pics based on states
   const renderProfilePic = () => {
     if (selectedImage)
-      return (
-        <Image
-          source={{ uri: selectedImage ? selectedImage.uri : null }}
-          style={image}
-        />
-      );
+      return <Image source={{ uri: selectedImage.uri }} style={image} />;
     if (user) {
       return user.photo ? (
-        <Image style={image} source={{ uri: user.photo[0] }} />
+        <Image style={image} source={{ uri: user.photo[0].url }} />
       ) : (
         <FontAwesome name="user" size={104} color={colors.secondary} />
       );
