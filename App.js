@@ -67,8 +67,6 @@ export default function App() {
     bootstrapAsync();
   }, []);
 
-  !isLoading && console.log("id:", userId, "token:", userToken);
-
   return (
     <NavigationContainer>
       {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
