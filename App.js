@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5, FontAwesome } from "@expo/vector-icons";
+import FlashMessage from "react-native-flash-message";
 
 // Screens
 import HomeScreen from "./containers/HomeScreen";
@@ -211,6 +212,7 @@ export default function App() {
           </Stack.Screen>
         </Stack.Navigator>
       )}
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }

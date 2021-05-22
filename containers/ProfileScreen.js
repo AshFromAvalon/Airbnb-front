@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import axios from "axios";
 import {
   Text,
@@ -116,6 +117,11 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
     const uploadedPicture = uploadResult.data.photo[0].url;
     setProfilePic(uploadedPicture);
     setUploading(false);
+    showMessage({
+      message: "Profile pic uploaded!",
+      type: "success",
+      icon: "success",
+    });
   });
 
   const updateInfo = async () => {
@@ -133,7 +139,11 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
           },
         }
       );
-      console.log(updateInfoResult.data);
+      showMessage({
+        message: "Information updated!",
+        type: "success",
+        icon: "success",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -234,7 +244,7 @@ const styles = StyleSheet.create({
   inputsContainer: {},
   buttonsContainer: {
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     height: 120,
   },
   button: {
