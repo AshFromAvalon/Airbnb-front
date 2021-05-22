@@ -7,8 +7,10 @@ import {
   SafeAreaView,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  ScrollView,
+  Dimensions,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import colors from "../assets/colors";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -26,7 +28,6 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedImage, setSelectedImage] = useState();
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,7 +53,7 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
       setIsLoading(false);
     };
     fetchData();
-  }, []);
+  }, [uploading]);
 
   // Get Gallery permission and set new Profile Pic
   const getGalleryPermission = async () => {
@@ -64,18 +65,20 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
       allowsEditing: true,
       aspect: [4, 3],
     });
-    setSelectedImage(pickerResult);
+    UploadSelectedImage(pickerResult);
   };
 
-  // Update profile pic and information
-  const updateProfile = useCallback(async () => {
+  // Update profile pic
+  const UploadSelectedImage = useCallback(async (pickerResult) => {
     console.log("IN UPDATE");
-    if (!selectedImage) return;
+    if (!pickerResult) return;
     console.log("SELECTED IMAGE EXIST");
-    if (selectedImage.cancelled) return;
+    if (pickerResult.cancelled) return;
     console.log("EXECUTING FUNC...");
 
-    const uri = selectedImage.uri;
+    setUploading(true);
+
+    const uri = pickerResult.uri;
     const fileExtension = uri.split(".").pop();
 
     const formData = new FormData();
@@ -97,25 +100,33 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
       }
     );
 
-    const updateInfoResult = await axios.put(
-      "https://express-airbnb-api.herokuapp.com/user/update",
-      {
-        email,
-        username,
-        description,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      }
-    );
+    setUploading(false);
   });
+
+  const updateInfo = async () => {
+    try {
+      const updateInfoResult = await axios.put(
+        "https://express-airbnb-api.herokuapp.com/user/update",
+        {
+          email,
+          username,
+          description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      console.log(updateInfoResult.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Render profile pics based on states
   const renderProfilePic = () => {
-    if (selectedImage)
-      return <Image source={{ uri: selectedImage.uri }} style={image} />;
+    if (uploading) return <LoadingActivity />;
     if (user) {
       return user.photo ? (
         <Image style={image} source={{ uri: user.photo[0].url }} />
@@ -131,14 +142,12 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
     imageInputContainer,
     image,
     iconsContainer,
-    icon,
     inputsContainer,
     buttonsContainer,
-    button,
   } = styles;
 
   return (
-    <SafeAreaView style={container}>
+    <KeyboardAwareScrollView style={container}>
       {!isLoading ? (
         <>
           <View style={imageInputContainer}>
@@ -163,22 +172,22 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
             <AreaInput setValue={setDescription} value={description} />
           </View>
           <View style={buttonsContainer}>
-            <TouchButton title={"Update"} onPress={updateProfile} />
+            <TouchButton title={"Update"} onPress={updateInfo} />
             <TouchButton title={"Log out"} onPress={() => setToken(null)} />
           </View>
         </>
       ) : (
         <LoadingActivity />
       )}
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 30,
     paddingVertical: 15,
+    height: Dimensions.get("window").height,
   },
   imageInputContainer: {
     flexDirection: "row",
@@ -186,13 +195,14 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   imageContainer: {
-    height: 200,
-    width: 200,
+    height: 180,
+    width: 180,
     borderColor: colors.accent,
     borderWidth: 2,
     borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
   },
   image: {
     height: 160,
@@ -200,20 +210,15 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   iconsContainer: {
-    height: 200,
+    height: 180,
     justifyContent: "space-around",
     marginLeft: 15,
   },
-  icon: {},
-  inputsContainer: {
-    justifyContent: "center",
-    marginTop: 50,
-  },
+  inputsContainer: {},
   buttonsContainer: {
     alignItems: "center",
-    marginTop: 50,
     justifyContent: "space-around",
-    flex: 1,
+    height: 120,
   },
   button: {
     borderWidth: 2,
