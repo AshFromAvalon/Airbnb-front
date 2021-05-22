@@ -178,7 +178,11 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerTitle: () => <Logo size={"small"} />,
+                      }}
+                    >
                       {/* <Stack.Screen
                         name="Settings"
                         options={{ title: "Settings", tabBarLabel: "Settings" }}
