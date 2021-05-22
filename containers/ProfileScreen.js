@@ -30,6 +30,7 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
 
   // Fetch User data and set State on screen mount
   useEffect(() => {
@@ -53,7 +54,7 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
       setIsLoading(false);
     };
     fetchData();
-  }, [uploading]);
+  }, [profilePic]);
 
   // Get Gallery permission and set new Profile Pic
   const getGalleryPermission = async () => {
@@ -62,6 +63,19 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
     if (galleryPerm.status != "granted") return;
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+    UploadSelectedImage(pickerResult);
+  };
+
+  // Get Gallery permission and set new Profile Pic
+  const getCameraPermission = async () => {
+    const galleryPerm = await ImagePicker.requestCameraPermissionsAsync();
+    console.log(galleryPerm);
+    if (galleryPerm.status != "granted") return;
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
@@ -99,7 +113,8 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
         },
       }
     );
-
+    const uploadedPicture = uploadResult.data.photo[0].url;
+    setProfilePic(uploadedPicture);
     setUploading(false);
   });
 
@@ -126,7 +141,8 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
 
   // Render profile pics based on states
   const renderProfilePic = () => {
-    if (uploading) return <LoadingActivity />;
+    if (uploading || isLoading) return <LoadingActivity />;
+    if (profilePic) return <Image style={image} source={{ uri: profilePic }} />;
     if (user) {
       return user.photo ? (
         <Image style={image} source={{ uri: user.photo[0].url }} />
@@ -163,6 +179,7 @@ const ProfileScreen = ({ userId, userToken, setToken }) => {
                 name="photo-camera"
                 size={28}
                 color={colors.primary}
+                onPress={getCameraPermission}
               />
             </View>
           </View>
